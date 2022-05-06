@@ -10,6 +10,7 @@ import edu.uaslp.objetos.shoppingcart.ShoppingCart.Item;
 import edu.uaslp.objetos.shoppingcart.ShoppingCart.ShoppingCart;
 import edu.uaslp.objetos.shoppingcart.exception.EmptyShoppingCartException;
 import edu.uaslp.objetos.shoppingcart.exception.InvalidDataException;
+import edu.uaslp.objetos.shoppingcart.exception.ItemNotFoundException;
 import org.junit.jupiter.api.Test;
 
 public class ShoppingCartTest {
