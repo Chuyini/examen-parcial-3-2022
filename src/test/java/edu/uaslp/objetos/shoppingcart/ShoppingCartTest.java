@@ -215,7 +215,7 @@ public class ShoppingCartTest {
         // Then:
         assertThat(shoppingCart.isEmpty()).isFalse();
         assertThat(shoppingCart.getItemsCount()).isEqualTo(6);
-        assertThat(shoppingCart.getTotalCost()).isEqualByComparingTo(new BigDecimal("226.40"));
+         assertThat(shoppingCart.getTotalCost()).isEqualByComparingTo(new BigDecimal("226.39"));
 
         List<Item> items = shoppingCart.getItems();
         assertThat(items.size()).isEqualTo(3);

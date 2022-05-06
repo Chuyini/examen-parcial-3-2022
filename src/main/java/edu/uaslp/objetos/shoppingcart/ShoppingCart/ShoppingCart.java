@@ -3,6 +3,7 @@ package edu.uaslp.objetos.shoppingcart.ShoppingCart;
 import edu.uaslp.objetos.shoppingcart.exception.EmptyShoppingCartException;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -44,10 +45,12 @@ public class ShoppingCart implements List {
     @Override
     public boolean add(Object item) {
 
+
         int cont;
         if(head==null)
         {
             head= (Item) item;
+            tail=(Item)item;
             size++;
         }else
         {
@@ -76,8 +79,27 @@ public class ShoppingCart implements List {
     }
 
     @Override
-    public boolean remove(Object o) {
-        return false;
+    public boolean remove(Object aux) {
+        Item aux2=(Item) aux;
+        if(aux2.next==null)
+        {
+            aux2=null;
+        }else if(aux2==head)
+        {
+            head=head.next;
+            aux2=null;
+        }else
+        {
+
+            aux2.previus.next=aux2.next;
+            aux2.next.previus=aux2.previus;
+            aux2=null;
+
+
+
+        }
+        return true;
+
     }
 
     @Override
@@ -118,10 +140,11 @@ public class ShoppingCart implements List {
     @Override
     public void add(int index, Object element) {
 
+
     }
 
     @Override
-    public Object remove(int index) {
+    public Object remove( int index) {
         return null;
     }
 
@@ -173,12 +196,12 @@ public class ShoppingCart implements List {
     public BigDecimal getTotalCost() {
         Item aux=head;
         BigDecimal cost=BigDecimal.ZERO;
+
         double trun;
-        int trun2;
+        String trun2;
+        float trun3;
 
-
-
-        double costin = 0;
+        float costin=0;
         BigDecimal totalCost = BigDecimal.ZERO;
 
         if(empty==false)
@@ -187,20 +210,20 @@ public class ShoppingCart implements List {
             {
 
 
-                costin=  (( aux.getQuantity()*aux.getUnitCost().doubleValue())+costin);
+                costin= (float) (( aux.getQuantity()*aux.getUnitCost().doubleValue())+costin);
 
                 aux=aux.next;
 
             }
-            trun=costin*100;
-            trun2=(int)trun;
-            //costin=trun2/100;
+            BigDecimal truc = new BigDecimal(costin);
+
+            cost=truc.setScale(2, RoundingMode.DOWN);
 
 
 
 
 
-            return new BigDecimal(costin);
+            return cost;
 
 
 
@@ -215,11 +238,30 @@ public class ShoppingCart implements List {
 
     public void addItem(Item item) {
 
+        Item aux2 =foundIteam(item);
 
+        if(aux2!=null) {
+            if(aux2.getUnitCost().floatValue()==item.getUnitCost().floatValue())
+            {
+                aux2.setQuantity(aux2.getQuantity()+item.getQuantity());
+
+                return;
+            }else {
+                add(item);
+
+                return;
+
+
+
+
+            }
+
+        }
 
         if(head==null)
         {
              head=item;
+             tail=head;
             size++;
         }else
         {
@@ -238,6 +280,7 @@ public class ShoppingCart implements List {
         {
             empty=false;
         }
+
 
 
 
@@ -287,5 +330,47 @@ public class ShoppingCart implements List {
     }
 
     public void removeItem(String itemCode1) {
+        Item aux=head;
+
+        for(int cont=0;cont<=size-1;cont++)
+        {
+            if(aux.getCode()==itemCode1)
+            {
+                aux.setQuantity(aux.getQuantity()-1);
+                if(aux.getQuantity()==0)
+                {
+
+                    remove(aux);
+                    size--;
+
+
+
+                }
+
+
+
+                return;
+
+            }
+            aux=aux.next;
+        }
+
     }
+
+    private Item foundIteam(Item item)
+    {
+        Item aux=head;
+        for(int cont=0;cont<=size-1;cont++)
+        {
+            if(aux.getCode()==item.getCode())
+            {
+                return aux;
+            }
+            aux=aux.next;
+        }
+        return null;
+    }
+
+
 }
+
